@@ -13,7 +13,7 @@ A web-based dashboard for parameters optimization
 ```
 $git clone https://github.com/tanutarou/OptBoard
 $cd OptBoard
-$ pip install -r requirements.txt
+$pip install -r requirements.txt
 $python ./manage.py runserver
 ```
 ブラウザで`localhost:8000`にアクセスする。
