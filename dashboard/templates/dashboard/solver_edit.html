@@ -1,0 +1,26 @@
+{% extends "dashboard/base.html" %}
+{% load bootstrap %}
+{% block content %}
+    <div class="container-fluid">
+      <div class="row">
+        <main class="col-sm-9 offset-sm-3 offset-md-2 pt-3" style="margin-top:60px">
+          <h3 class="page-header">Solverの編集</h3>
+          {% if solver_id %}
+          <form action="{% url 'dashboard:solver_edit' project.id solver_id %}" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
+          {% else %}
+          <form action="{% url 'dashboard:solver_add' project.id %}" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
+          {% endif %}
+            {% csrf_token %}
+            {{ form|bootstrap_horizontal }}
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-primary">送信</button>
+              </div>
+            </div>
+          </form>
+          <a href="{% url 'dashboard:main' project.id %}" class="btn btn-default btn-sm">戻る</a>
+
+        </main>
+      </div>
+    </div>
+{% endblock content %}

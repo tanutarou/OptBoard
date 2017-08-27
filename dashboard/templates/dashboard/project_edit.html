@@ -1,0 +1,25 @@
+{% extends "dashboard/base.html" %}
+{% load bootstrap %}
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <main class="col-sm-9 offset-sm-3 offset-md-2 pt-3" style="margin-top:60px">
+      <h3 class="page-header">プロジェクトの編集</h3>
+      {% if edit_project.id %}
+        <form action="{% url 'dashboard:project_edit' edit_project.id %}" method="post" class="form-horizontal" role="form">
+      {% else %}
+        <form action="{% url 'dashboard:project_add' %}" method="post" class="form-horizontal" role="form">
+      {% endif %}
+        {% csrf_token %}
+        {{ form|bootstrap_horizontal }}
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-primary">送信</button>
+          </div>
+        </div>
+      </form>
+
+    </main>
+  </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,55 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="../../favicon.ico">
+    <title>OptBoard</title>
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/dashboard.css' %}" rel="stylesheet" type="text/css">
+  </head>
+
+  <body>
+    <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
+      <button class="navbar-toggler navbar-toggler-right hidden-lg-up" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="/">OptBoard</a>
+
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        {% if project %}
+          <ul class="navbar-nav mr-auto" id="nav">
+            <li class="nav-item">
+              <a class="nav-link active" href="/{{ project.id }}">Home </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/{{ project.id }}/solver">Solver</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="/{{ project.id }}/analysis/1D">Analysis1D</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="/{{ project.id }}/analysis/2D">Analysis2D</a>
+            </li>
+          </ul>
+          <span class="navbar-brand" href="/">current project : {{ project.name }}</span>
+          <a class="btn btn-success btn-sm my-2 " href="/project/add">New Project</a>
+        {% else %}
+          <ul class="navbar-nav mr-auto" id="nav">
+          </ul>
+          <a class="btn btn-success btn-sm my-2 " href="/project/add">New Project</a>
+        {% endif %}
+      </div>
+    </nav>
+
+    {% block content %}
+      {{ content }}
+    {% endblock %}
+
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="http://localhost:8000/static/js/bootstrap.js"></script>
+  </body>
+</html>

@@ -1,0 +1,121 @@
+{% extends "dashboard/base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <nav class="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar">
+      <ul class="nav nav-pills flex-column">
+        <li class="nav-item">
+          <a class="nav-link active" href="#">Solver List<span class="sr-only">(current)</span></a>
+        </li>
+        {% for solver in solvers %}
+        <li class="nav-item">
+          <form class="form-inline my-2 my-lg-0" method="get" action="/{{ project.id }}/">
+            <button class="nav-link" name="solver_id" type="submit" href="" value="{{ solver.id }}" style="border-style:none;background-color:transparent">{{ solver.name }}</button>
+          </form>
+        </li>
+        {% endfor %}
+      </ul>
+
+    </nav>
+
+
+    <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3" style='margin-top:51px'>
+      <h1>Solver 実行</h1>
+      {% if select_solver %}
+        <form class="form-inline my-2 my-lg-0 navbar-right" method="post">
+          {% csrf_token %}
+
+          <div>
+            <h2 class="text-primary"> {{ select_solver.name }} </h2> 
+            <input class="form-control" name="solver" value="{{ select_solver.name }}" type="hidden" >
+            <h4> parameters: </h4>
+            <table class="table table-sm table-bordered">
+              <tbody>
+                <thead class="table-success">
+                {% for param_key in select_solver.get_keys %}
+                  <th>
+                    {{ param_key }}
+                  </th>
+                {% endfor %}
+                </thead>
+                <tr>
+                {% for param_val in select_solver.get_values %}
+                  <td>
+                    {{ param_val }}
+                  </td>
+                {% endfor %}
+                </tr>
+                <tr>
+                {% for param_key in select_solver.get_keys %}
+                  <td>
+                    <input class="form-control mr-sm-2" name="{{ param_key }}" type="text" maxlength="200" placeholder="parameter">
+                  </td>
+                {% endfor %}
+                </tr>
+              </tbody>
+            </table>
+            <h4> comment : {{ select_solver.comment }} </h4>
+          </div>
+
+          <div class="container" style="margin-top:20px">
+            <input class="form-control " name="comment" type="text" maxlength="400" style="width:700px" placeholder="comment">
+            <select class="form-control mr-sm-2-menu" name="thread" style="margin:5px 5px">
+              <option  type="text" value="tags">single</option>
+              <option  type="text" value="tags">parallel</option>
+            </select>
+            <button class="btn btn-danger my-2 my-sm-0" type="submit">Run</button>
+          </div>
+        </form>
+      {% else %}
+        <h4> Please select solver </h4>
+      {% endif %}
+
+      <h1 style='margin-top:30px'>実行結果一覧</h1>
+
+      <div class="container" style="margin-top:20px;">
+        <form class="form-inline my-2 my-lg-0" method="get">
+          <input class="form-control" name="solver_id" value="{{ select_solver.id }}" type="hidden" >
+          <select class="form-control mr-sm-2-menu" name="sort-type" style="margin:10px 5px;width:810px;">
+            <option  type="text" value="-eval_val">評価値の大きい順</option>
+            <option  type="text" value="eval_val">評価値の小さい順</option>
+            <option  type="text" value="-pub_date">新しい順</option>
+            <option  type="text" value="pub_date">古い順</option>
+            <option  type="text" value="solver">solver</option>
+          </select>
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Sort</button>
+        </form>
+      </div>
+      <a class="btn btn-outline-danger my-2 my-sm-0" href="{% url 'dashboard:result_del_all' project.id %}">delete all</a>
+
+      <table class="table table-hover table-bordered">
+        <thead class="table-info">
+          <th>name</th>
+          <th>solver</th>
+          <th>params</th>
+          <th>eval val</th>
+          <th>date</th>
+          <th>comment</th>
+          <th>操作</th>
+        </thead>
+        <tbody>
+          {% for result in results %}
+          <tr>
+            <td>{{ result.name }}</td>
+            <td>{{ result.solver }}</td>
+            <td>{{ result.params }}</td>
+            <td>{{ result.eval_val }}</td>
+            <td>{{ result.pub_date }}</td>
+            <td>{{ result.comment }}</td>
+            <td>
+              <a href="{% url 'dashboard:result_del' project.id result.id %}" class="btn btn-primary btn-sm">delete</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+    </main>
+  </div>
+</div>
+{% endblock content %}

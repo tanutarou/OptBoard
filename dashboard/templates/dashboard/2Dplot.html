@@ -1,0 +1,81 @@
+{% extends "dashboard/base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <nav class="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar">
+      <ul class="nav nav-pills flex-column">
+        <li class="nav-item">
+          <a class="nav-link active" href="#">Solver List<span class="sr-only">(current)</span></a>
+        </li>
+        {% for solver in solvers %}
+        <li class="nav-item">
+          <form class="form-inline my-2 my-lg-0" method="get" action="/{{ project.id }}/analysis/2D">
+            <button class="nav-link" name="solver_id" type="submit" href="" value="{{ solver.id }}" style="border-style:none;background-color:transparent">{{ solver.name }}</button>
+          </form>
+        </li>
+        {% endfor %}
+      </ul>
+
+    </nav>
+
+
+    <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3" style='margin-top:51px'>
+      <h1>2つのパラメータに関する解析</h1>
+      {% if select_solver %}
+        <form class="form-inline my-2 my-lg-0 navbar-right" method="get">
+
+          <div class="container" style="margin-left:0px">
+            <h2 class="text-primary"> {{ select_solver.name }} </h2> 
+            <input class="form-control" name="solver_id" value="{{ select_solver.id }}" type="hidden" >
+            <h4> parameters: </h4>
+            <table class="table table-sm table-bordered">
+              <tbody>
+                <thead class="table-success">
+                {% for param_key in select_solver.get_keys %}
+                  <th>
+                      {{ param_key }}
+                  </th>
+                {% endfor %}
+                </thead>
+                <tr>
+                {% for param_val in select_solver.get_values %}
+                  <td>
+                    {{ param_val }}
+                  </td>
+                {% endfor %}
+                </tr>
+              </tbody>
+            </table>
+            <h4> comment : {{ select_solver.comment }} </h4>
+          </div>
+
+          <div class="container" style="margin-left:0px;margin-top:30px;">
+            <h4>パラメータ選択</h4>
+            <select class="form-control mr-sm-2-menu" name="select_param1" style="margin:10px 5px;width:100px;">
+              {% for param_key in select_solver.get_keys %}
+                <option  type="text" value="{{ param_key }}">{{ param_key }} </option>
+              {% endfor %}
+            </select>
+
+            <select class="form-control mr-sm-2-menu" name="select_param2" style="margin:10px 5px;width:100px;">
+              {% for param_key in select_solver.get_keys %}
+                <option  type="text" value="{{ param_key }}">{{ param_key }} </option>
+              {% endfor %}
+            </select>
+            <button type="submit"> Analysis </button>
+          </div>
+        </form>
+      {% else %}
+        <h4> Please select solver </h4>
+      {% endif %}
+
+
+
+      <h2 style='margin-top:30px'>選択パラメータに対する評価値の変化のグラフ</h2>
+      <img src="data:image/png;base64,{{graphic|safe}}">
+
+    </main>
+  </div>
+</div>
+{% endblock content %}
