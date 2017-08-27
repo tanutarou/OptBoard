@@ -10,6 +10,14 @@ A web-based dashboard for parameters optimization
 ![main](https://user-images.githubusercontent.com/7645600/29746826-8f7844e6-8b21-11e7-8d99-93fc7e483849.png)
 
 # Usage
+```
+$git clone https://github.com/tanutarou/OptBoard
+$cd OptBoard
+$ pip install -r requirements.txt
+$python ./manage.py runserver
+```
+ブラウザで`localhost:8000`にアクセスする。
+
 1. 右上にある[New Project]を押してプロジェクトを作成する
 2. 作成したプロジェクト右にある[Open]によりプロジェクトを開く
 3. Solver(実行するプログラム)がないと始まらないので、上部のナビゲータから[Solver]を押してSolverを登録する
